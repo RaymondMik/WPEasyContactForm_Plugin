@@ -2,7 +2,8 @@
 jQuery(document).ready(function() {
     
     function printFormElement(labelValue, inputType, inputName, inputRequired) {
-        var printHtml = '<label for="' + inputName + '">' + labelValue + '</label> <input type="' + inputType + '" name="' + inputName + '" value="" ' + inputRequired + ' >';
+        var fieldType = (inputType == 'textarea') ? '<textarea name="' + inputName + '" rows="5" cols="50" value="" ' + inputRequired + '></textarea>' : '<input type="' + inputType + '" name="' + inputName + '" value="" ' + inputRequired + ' >';
+        var printHtml = '<label for="' + inputName + '"><b>' + labelValue + ':</b> </label>' + fieldType;
         return printHtml
     }
     
@@ -14,7 +15,7 @@ jQuery(document).ready(function() {
         var inputRequired = jQuery('#simple_contactform_required:checked').is(':checked') ? 'required' : '';
         var formPreviewContainer = jQuery('#simple_contactform_preview');
         
-        formPreviewContainer.append( '<div>' + printFormElement(labelValue, inputType, inputName, inputRequired) + '</div>' );
+        formPreviewContainer.append( '<div>' + printFormElement(labelValue, inputType, inputName, inputRequired) + ' <b>' + inputRequired + '</b></div>' );
     });
     
 });
