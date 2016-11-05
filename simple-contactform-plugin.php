@@ -36,31 +36,31 @@ function simple_contactform_plugin_options_page() {
 		wp_die('You do not have sufficient permission to access this page');
 	}
 
-	//make this variables available also in the require statement, hence in the options-page-wrapper.php file
 	global $plugin_url;
 	global $options;
     global $form_elements;
 	
 	//check if the form has been submitted
 	if ( isset($_POST['simple_contactform_form_submitted']) ) {
-
+  
 		$hidden_field = esc_html($_POST['simple_contactform_form_submitted']);
 
 		if( $hidden_field == 'Y' ) {
     
-            $new_form_element = $_POST['simple_contactform_element_dropdown'];
-
-			//$new_form_element = $_POST['simple_contactform_element_dropdown'];
-			$receiver_email_address = $_POST['simple_contactform_receiver'];
+            $new_form_element = $_POST['simple_contactform_form_elements'];
+            array_push($form_elements, $new_form_element);
+			$recipient_email_address = $_POST['simple_contactform_recipient'];
+            
+            $form_elements = explode("," , $new_form_element);
+            print_r($form_elements);
 
 			//save what is stored in the $option array in the custom_tooltip option_name field of the options table
-			if ($form_elements != '') {
-                array_push($form_elements, $new_form_element);
-				update_option('page_selected', $form_elements);
+			if ($new_form_element != '') {
+				update_option('simple_contactform_form_selected', $new_form_element);
 			}
 
-			if ($receiver_email_address != '') {
-				update_option('post_selected', $receiver_email_address);
+			if ($recipient_email_address != '') {
+				update_option('simple_contactform_recipient_selected', $recipient_email_address);
 			}
 		}
 	}
@@ -79,8 +79,8 @@ function simple_contactform_plugin_options_page() {
 		}
 	}
 
-	$form_fields = get_option('page_selected');
-	$form_recipient = get_option('post_selected');
+	$form_fields = get_option('simple_contactform_form_selected');
+	$form_recipient = get_option('simple_contactform_recipient_selected');
 
 	//add Admin Menu Layout
 	require('includes/simple-contact-form-page-wrapper.php');
