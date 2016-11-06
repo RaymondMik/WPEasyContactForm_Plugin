@@ -70,7 +70,7 @@
 
                             <?php 
                                 if ( $form_fields != '') {
-                                    print_r($form_fields); 
+                                    print_r($form_elements);
                                 } 
                             ?>
 
