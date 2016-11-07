@@ -51,55 +51,29 @@ function simple_contactform_plugin_options_page() {
 			$recipient_email_address = $_POST['simple_contactform_recipient'];
             
             $form_elements = explode("," , $new_form_layout_string);
-            // get array length;
-            $form_strings_number = count($form_elements);
-            // divide it by three
-            $form_elements_number = $form_strings_number / 3;
-            $form_elements_container = array();
-            
-            // once you get number of variables, group elements
-            if ( isset($form_elements_number) ) {
-                switch ($form_elements_number) {
-                    case 1:
-                        $element_one = array_slice($form_elements, 0, 3);
-                        array_push($form_elements_container, $element_one);
-                        break;
-                    case 2:
-                        $element_one = array_slice($form_elements, 0, 3);
-                        $element_two = array_slice($form_elements, 4, 6);
-                        array_push($form_elements_container, $element_one, $element_two);
-                        break;
-                    case 3:
-                        $element_one = array_slice($form_elements, 0, 3);
-                        $element_two = array_slice($form_elements, 4, 6);
-                        $element_three = array_slice($form_elements, 7, 9);
-                        array_push($form_elements_container, $element_one, $element_two, $element_three);
-                        break;
-                    case 4:
-                        $element_one = array_slice($form_elements, 0, 3);
-                        $element_two = array_slice($form_elements, 4, 6);
-                        $element_three = array_slice($form_elements, 7, 9);
-                        $element_four = array_slice($form_elements, 10, 13);
-                        array_push($form_elements_container, $element_one, $element_two, $element_three, $element_four);
-                        break;
-                    default:
-                        $element_one = array_slice($form_elements, 0, 3);
-                }
-            }
+            $form_elements_grouped = array_chunk($form_elements, 3);
             
             // TO DO write function that, depending on the number of elements received, 
             // sends html input fields to the db.
-            print_r($form_elements_container);
-            echo '<label for="' . $element_one[0] . '"><b>' . $element_one[2] . ': </b></label><input type="' . $element_one[1] . '" name="' . $element_one[0] . '" >';
-    
-			//save what is stored in the $option array in the custom_tooltip option_name field of the options table
+            
 			if ($new_form_element != '') {
-				update_option('simple_contactform_form_selected', $new_form_element);
+				update_option('simple_contactform_form_selected', $form_elements_grouped);
 			}
 
 			if ($recipient_email_address != '') {
 				update_option('simple_contactform_recipient_selected', $recipient_email_address);
 			}
+            
+            function simple_contactform_show_form($form_elements_grouped) {
+                 foreach ($form_elements_grouped as $form_element) {
+                    if ($form_element[1] !== 'textarea') {
+                        echo '<label for="' . $form_element[0] . '"><b>' . $form_element[2] . ': </b></label><input type="' . $form_element[1] . '" name="' . $form_element[0] . '" >';
+                    } else {
+                        echo '<label for="' . $form_element[0] . '"><b>' . $form_element[2] . ': </b></label><textarea name="' . $form_element[0] . '" rows="5" cols="50" value=""></textarea>';
+                    } 
+                }
+            }
+        
 		}
 	}
 
@@ -128,7 +102,8 @@ function simple_contactform_plugin_options_page() {
 
 function simple_contactform_plugin_markup_code() { 
     
-   //Form markup goes here
+    //Form markup goes here
+    
 
 }
 

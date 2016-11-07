@@ -69,8 +69,8 @@
                             <h3>Form</h3>
 
                             <?php 
-                                if ( $form_fields != '') {
-                                    print_r($form_elements);
+                                if ( isset($form_elements_grouped) ) {
+                                    simple_contactform_show_form($form_elements_grouped);
                                 } 
                             ?>
 
