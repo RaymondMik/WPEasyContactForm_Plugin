@@ -39,6 +39,8 @@ function simple_contactform_plugin_options_page() {
 	global $plugin_url;
 	global $options;
     global $form_elements;
+    global $selected_form_fields;
+    global $selected_form_recipient;
 	
 	//check if the form has been submitted
 	if ( isset($_POST['simple_contactform_form_submitted']) ) {
@@ -49,35 +51,27 @@ function simple_contactform_plugin_options_page() {
     
             $new_form_layout_string = $_POST['simple_contactform_form_elements'];
 			$recipient_email_address = $_POST['simple_contactform_recipient'];
-            
             $form_elements = explode("," , $new_form_layout_string);
             $form_elements_grouped = array_chunk($form_elements, 3);
-            
-            // TO DO write function that, depending on the number of elements received, 
-            // sends html input fields to the db.
-            
-			if ($new_form_element != '') {
-				update_option('simple_contactform_form_selected', $form_elements_grouped);
+
+            // Save form elements into DB
+			if ($form_elements_grouped != '') {
+				update_option('simple_contactform_selected_form', $form_elements_grouped);
 			}
 
 			if ($recipient_email_address != '') {
-				update_option('simple_contactform_recipient_selected', $recipient_email_address);
+				update_option('simple_contactform_selected_recipient', $recipient_email_address);
 			}
             
-            function simple_contactform_show_form($form_elements_grouped) {
-                 foreach ($form_elements_grouped as $form_element) {
-                    if ($form_element[1] !== 'textarea') {
-                        echo '<label for="' . $form_element[0] . '"><b>' . $form_element[2] . ': </b></label><input type="' . $form_element[1] . '" name="' . $form_element[0] . '" >';
-                    } else {
-                        echo '<label for="' . $form_element[0] . '"><b>' . $form_element[2] . ': </b></label><textarea name="' . $form_element[0] . '" rows="5" cols="50" value=""></textarea>';
-                    } 
-                }
-            }
-        
+            
 		}
 	}
 
-	if ( isset($_POST['custom_tooltip_form_submitted_delete']) ) { 
+    // Retrieve form elements from DB
+    $selected_form_fields = get_option('simple_contactform_selected_form');
+    $selected_form_recipient = get_option('simple_contactform_selected_recipient');
+    
+	/*if ( isset($_POST['custom_tooltip_form_submitted_delete']) ) { 
 
 		$hidden_field_delete = esc_html($_POST['custom_tooltip_form_submitted_delete']);
 
@@ -89,15 +83,23 @@ function simple_contactform_plugin_options_page() {
 				delete_option('post_selected');
 			}
 		}
-	}
-
-	$form_fields = get_option('simple_contactform_form_selected');
-	$form_recipient = get_option('simple_contactform_recipient_selected');
+	}*/
 
 	//add Admin Menu Layout
 	require('includes/simple-contact-form-page-wrapper.php');
 
 }
+
+function simple_contactform_show_form($selected_form_fields) {
+     foreach ($selected_form_fields as $form_element) {
+        if ($form_element[1] !== 'textarea') {
+            echo '<label for="' . $form_element[0] . '"><b>' . $form_element[2] . ': </b></label><input type="' . $form_element[1] . '" name="' . $form_element[0] . '" ><br>';
+        } else {
+            echo '<label for="' . $form_element[0] . '"><b>' . $form_element[2] . ': </b></label><textarea name="' . $form_element[0] . '" rows="5" cols="50" value=""></textarea><br>';
+        } 
+    }
+}
+add_action( 'simple_contactform_loop', 'simple_contactform_show_form');
 
 
 function simple_contactform_plugin_markup_code() { 

@@ -14,7 +14,7 @@
                     <div class="postbox">
                         <h2 class="hndle">Settings</h2>
                         <div class="inside">
-                            <form name="simple_contactform_form" method="post" action="">
+                            <form name="simple_contactform_form_elements" method="post" action="">
                                 <!--create a hidden field to tell when the form has been submitted-->
                                 <input type="hidden" name="simple_contactform_form_submitted" value="Y">
                                 <h4>
@@ -44,7 +44,7 @@
                                 
                                 <div>
                                     <label for="simple_contactform_recipient">Type recipient email</label>
-                                    <input type="email" name="simple_contactform_recipient" value="<?php echo $form_recipient ?>" required>
+                                    <input type="email" name="simple_contactform_recipient" value="<?php echo $selected_form_recipient != '' ? $selected_form_recipient : ''; ?>" required>
                                 </div>
 
                                 <input class="button-primary panel_button" type="submit" name="page_select_submit" value="<?php echo esc_html_e('Save', 'simple-contactform-plugin'); ?>">
@@ -67,13 +67,7 @@
                     <ul>
                         <li>
                             <h3>Form</h3>
-
-                            <?php 
-                                if ( isset($form_elements_grouped) ) {
-                                    simple_contactform_show_form($form_elements_grouped);
-                                } 
-                            ?>
-
+                            <?php simple_contactform_show_form($selected_form_fields); ?>
                             <?php
                                 if ( $form_fields != '' ) {
                                     //echo '<input type="submit" name="delete_selected_page" class="button-primary" value="Remove">';
@@ -82,13 +76,7 @@
                         </li>
                         <li>
                             <h3><?php echo __('Recipient'); ?></h3>
-                            <h3>
-                                <?php 
-                                    if ( $form_recipient != '') {
-                                        echo $form_recipient; 
-                                    } 
-                                ?>
-                            </h3>
+                            <h3><?php echo $selected_form_recipient; ?></h3>
                             <?php
                                 if ( $form_recipient != '' ) {
                                     //echo '<input type="submit" name="delete_selected_post" class="button-primary" value="Remove">';
