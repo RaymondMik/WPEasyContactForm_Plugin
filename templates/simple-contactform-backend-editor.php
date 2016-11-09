@@ -12,17 +12,17 @@
             <div id="post-body-content">
                 <div class="meta-box-sortables ui-sortable">
                     <div class="postbox">
-                        <h2 class="hndle">Settings</h2>
+                        <h2 class="hndle"><?php echo __(Settings); ?></h2>
                         <div class="inside">
                             <form name="simple_contactform_form_elements" method="post" action="">
                                 <!--create a hidden field to tell when the form has been submitted-->
                                 <input type="hidden" name="simple_contactform_form_submitted" value="Y">
                                 <h4>
-                                <?php echo esc_html_e( 'Select what fields you want to display in your form. For each field you need to assign a label too', 'simple-contactform-plugin'); ?>
+                                <?php echo __( 'Select what fields you want to display in your form. For each field you need to assign a label too', 'simple-contactform-plugin'); ?>
                                 </h4>
                                 <div>
-                                    <label for="simple_contactform_name"><b>Choose input name</b></label>
-                                    <input type="text" id="simple_contactform_select_name" name="simple_contactform_name" value="" placeholder="For example 'user_name' ">
+                                    <!--<label for="simple_contactform_name"><b>Choose input name</b></label>
+                                    <input type="text" id="simple_contactform_select_name" name="simple_contactform_name" value="" placeholder="For example 'user_name' ">-->
                                     
                                     <label for="simple_contactform_label"><b>Choose input label</b></label>
                                     <input type="text" id="simple_contactform_select_label" name="simple_contactform_label" value="" placeholder="Type label here">
@@ -37,67 +37,40 @@
                                         <option value="textarea"><?php echo esc_html_e( 'Text Box', 'simple-contactform-plugin' ); ?></option>
                                     </select>
                                     <input type="checkbox" id="simple_contactform_required" name="simple_contactform_required" value="required"> Required
-                                    <button id="simple_contactform_add_element" class="button-primary"><?php echo esc_html_e( 'Add', 'simple-contactform-plugin' ); ?></button>
+                                    <button id="simple_contactform_add_element" class="button-primary"><?php echo __('Add'); ?></button>
+                                    
+                                    <div>
+                                        <label for="simple_contactform_recipient"><?php echo __('Recipient e-mail') ?></label>
+                                        <input type="email" name="simple_contactform_recipient" value="<?php echo isset($selected_form_recipient) ? $selected_form_recipient : ''; ?>" required>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="simple_contactform_recipient"><?php echo __('Text for send button') ?></label>
+                                        <input type="text" name="simple_contactform_send_button" value="<?php echo isset($selected_send_button_text) ? $selected_send_button_text : ''; ?>" required>
+                                    </div>
                                 </div>
                                 
                                 <div id="simple_contactform_preview"></div>
                                 
-                                <div>
-                                    <label for="simple_contactform_recipient">Type recipient email</label>
-                                    <input type="email" name="simple_contactform_recipient" value="<?php echo $selected_form_recipient != '' ? $selected_form_recipient : ''; ?>" required>
-                                </div>
-
-                                <input class="button-primary panel_button" type="submit" name="page_select_submit" value="<?php echo esc_html_e('Save', 'simple-contactform-plugin'); ?>">
+                                <?php if (isset($selected_form_fields)) : ?>
+                                    <div>
+                                        <?php simple_contactform_show_form($selected_form_fields, $selected_send_button_text); ?>
+                                    </div>
+                                <?php endif; ?>
+                                
+                                <input class="button-primary panel_button" type="submit" name="page_select_submit" value="<?php echo __('Save'); ?>">
 
                             </form>
+                            
                         </div><!-- .inside -->
                     </div><!-- .postbox -->
                 </div><!-- .meta-box-sortables .ui-sortable -->
             </div><!-- post-body-content -->
-
-            <!-- sidebar -->
-            <div id="postbox" class="postbox-container">
-            <div class="meta-box-sortables">
-            <div class="postbox">
-            <h2 class="hndle">Your Form:</h2>
-            <div class="inside">
-                <form name="custom_tooltip_form_delete" method="post" action="">
-                    <!--create a hidden field to tell when the form has been submitted-->
-                    <input type="hidden" name="custom_tooltip_form_submitted_delete" value="Y">
-                    <ul>
-                        <li>
-                            <h3>Form</h3>
-                            <?php simple_contactform_show_form($selected_form_fields); ?>
-                            <?php
-                                if ( $form_fields != '' ) {
-                                    //echo '<input type="submit" name="delete_selected_page" class="button-primary" value="Remove">';
-                                }
-                            ?>
-                        </li>
-                        <li>
-                            <h3><?php echo __('Recipient'); ?></h3>
-                            <h3><?php echo $selected_form_recipient; ?></h3>
-                            <?php
-                                if ( $form_recipient != '' ) {
-                                    //echo '<input type="submit" name="delete_selected_post" class="button-primary" value="Remove">';
-                                }
-                            ?>
-                        </li>
-                    </ul>
-                </form>
-            </div><!-- .inside -->
-            </div><!-- .postbox -->
-            </div><!-- .meta-box-sortables -->
-            </div><!-- #postbox-container-1 .postbox-container -->
         </div><!-- #post-body .metabox-holder .columns-2 -->
         <br class="clear">
 
     </div><!-- #poststuff -->
 </div><!-- .wrap -->
-
-<?php 
-
-?>
 
 <!--
 1) Once the form gets submitted

@@ -38,9 +38,9 @@ function simple_contactform_plugin_options_page() {
 
 	global $plugin_url;
 	global $options;
-    global $form_elements;
     global $selected_form_fields;
     global $selected_form_recipient;
+    global $selected_send_button_text;
 	
 	//check if the form has been submitted
 	if ( isset($_POST['simple_contactform_form_submitted']) ) {
@@ -51,8 +51,11 @@ function simple_contactform_plugin_options_page() {
     
             $new_form_layout_string = $_POST['simple_contactform_form_elements'];
 			$recipient_email_address = $_POST['simple_contactform_recipient'];
+            $send_button_text = $_POST['simple_contactform_send_button'];
+            
             $form_elements = explode("," , $new_form_layout_string);
-            $form_elements_grouped = array_chunk($form_elements, 3);
+            $form_elements_grouped = array_chunk($form_elements, 4);
+            print_r($form_elements_grouped);
 
             // Save form elements into DB
 			if ($form_elements_grouped != '') {
@@ -63,6 +66,10 @@ function simple_contactform_plugin_options_page() {
 				update_option('simple_contactform_selected_recipient', $recipient_email_address);
 			}
             
+            if ($send_button_text != '') {
+				update_option('simple_contactform_send_button_text', $send_button_text);
+			}
+            
             
 		}
 	}
@@ -70,6 +77,11 @@ function simple_contactform_plugin_options_page() {
     // Retrieve form elements from DB
     $selected_form_fields = get_option('simple_contactform_selected_form');
     $selected_form_recipient = get_option('simple_contactform_selected_recipient');
+    $selected_send_button_text = get_option('simple_contactform_send_button_text');
+    
+//    print_r($selected_form_fields);
+//    var_dump($selected_form_recipient);
+//    var_dump($selected_send_button_text);
     
 	/*if ( isset($_POST['custom_tooltip_form_submitted_delete']) ) { 
 
@@ -86,18 +98,22 @@ function simple_contactform_plugin_options_page() {
 	}*/
 
 	//add Admin Menu Layout
-	require('includes/simple-contact-form-page-wrapper.php');
+	require('templates/simple-contactform-backend-editor.php');
 
 }
 
-function simple_contactform_show_form($selected_form_fields) {
-     foreach ($selected_form_fields as $form_element) {
+function simple_contactform_show_form($selected_form_fields, $selected_send_button_text) {
+    echo '<div class="simple-contactform-container">';
+    foreach ($selected_form_fields as $form_element) {
+        echo '<div><label for="' . $form_element[2] . '"><b>' . $form_element[0] . ': </b></label>';
         if ($form_element[1] !== 'textarea') {
-            echo '<label for="' . $form_element[0] . '"><b>' . $form_element[2] . ': </b></label><input type="' . $form_element[1] . '" name="' . $form_element[0] . '" ><br>';
+            echo '<input type="' . $form_element[1] . '" name="' . $form_element[2] . '" value="" ><br></div>';
         } else {
-            echo '<label for="' . $form_element[0] . '"><b>' . $form_element[2] . ': </b></label><textarea name="' . $form_element[0] . '" rows="5" cols="50" value=""></textarea><br>';
-        } 
+            echo '<textarea name="' . $form_element[2] . '" rows="5" cols="50" value=""></textarea><br></div>';
+        }
     }
+    echo '<button type="button" class="simple-contactform-preview-button" disabled>' . $selected_send_button_text . '</button>';
+    echo '</div>';
 }
 add_action( 'simple_contactform_loop', 'simple_contactform_show_form');
 
@@ -153,6 +169,7 @@ add_shortcode( 'simple_contactform_plugin', 'simple_contactform_plugin_shortcode
 //Enqueue Backend Scripts and Styles
 function simple_contactform_plugin_enqueue() {
     global $plugin_url;
-    wp_enqueue_script( 'simple_contactform_plugin_js', ($plugin_url . '/simple-contactform-plugin.js'), array('jquery'), '', true );
+    wp_enqueue_style( 'simple_contactform_plugin_css', ($plugin_url . '/includes/simple-contactform-style.css') );
+    wp_enqueue_script( 'simple_contactform_plugin_js', ($plugin_url . '/includes/simple-contactform-script.js'), array('jquery'), '', true );
 }
 add_action('admin_head', 'simple_contactform_plugin_enqueue');

@@ -2,44 +2,42 @@
 jQuery(document).ready(function() {
     
     function printFormElement(labelValue, inputType, inputName, inputRequired) {
+        var required = inputRequired == true ? 'required' : '';
         if ( inputType == 'textarea') {
-            var fieldType = '<textarea name="' + inputName + '" rows="5" cols="50" value="" ' + inputRequired + '></textarea><br>';
+            var fieldType = '<textarea name="' + inputName + '" rows="5" cols="50" value="" ></textarea><br>';
         } else {
-            var fieldType = '<input type="' + inputType + '" name="' + inputName + '" value="" ' + inputRequired + '><br>';
+            var fieldType = '<input type="' + inputType + '" name="' + inputName + '" value="" ><br>';
         }
         var returnFormElements = {
             printHtml: '<label for="' + inputName + '"><b>' + labelValue + ': </b></label>' + fieldType,
             labelValue: labelValue,
             inputType: inputType,
-            inputName: inputName
+            inputName: inputName,
+            inputRequired: required,
         }
         return returnFormElements;
     }
     
     var formElements = [];
+    var sendToServer = [];
+    var formElementCounter = 1;
     
     jQuery('#simple_contactform_add_element').click(function(e){
         e.preventDefault();
-        var inputName = jQuery('#simple_contactform_select_name').val();
+        
         var labelValue = jQuery('#simple_contactform_select_label').val() != '' ? jQuery('#simple_contactform_select_label').val() : '';
         var inputType = jQuery('#simple_contactform_select_element').val();
-        //var inputName = 'simple_contactform_' + jQuery('#simple_contactform_select_element').val() + '_field';
-        
-        var inputRequired = jQuery('#simple_contactform_required:checked').is(':checked') ? 'required' : '';
+        var inputName = 'simple-contactform-element-' + formElementCounter;
+        var inputRequired = jQuery('#simple_contactform_required:checked').is(':checked') ? true : false;
         var formPreviewContainer = jQuery('#simple_contactform_preview');
         
+        formElementCounter++;
         var getFormElements = printFormElement(labelValue, inputType, inputName, inputRequired);
-        formElements.push(getFormElements);
-        console.log(formElements);
-        var formPreviewElement = '<div>' + getFormElements.printHtml + '<b>' + inputRequired + '</b></div>';
-        var sendToServer = [];
-        for (var i = 0; i < formElements.length; i++) {
-            sendToServer.push(formElements[i].labelValue, formElements[i].inputType, formElements[i].inputName);
-        }
-        console.log(sendToServer);
-        //var sendToServer = getFormElements.labelValue + ' ' + getFormElements.inputType + ' ' + getFormElements.inputName;
+        var formPreviewElement = '<div>' + getFormElements.printHtml + '<b>' + getFormElements.inputRequired + '</b></div>';
+         
+        sendToServer.push(getFormElements.labelValue, getFormElements.inputType, getFormElements.inputName, getFormElements.inputRequired);
         var formSendElement = '<input type="hidden" name="simple_contactform_form_elements" value="' + sendToServer + '">';
-        
+        console.log(sendToServer);
         formPreviewContainer.append( 
             formPreviewElement,
             formSendElement
