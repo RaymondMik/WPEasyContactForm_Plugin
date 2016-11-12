@@ -103,17 +103,20 @@ function simple_contactform_plugin_options_page() {
 }
 
 function simple_contactform_show_form($selected_form_fields, $selected_send_button_text) {
-    echo '<div class="simple-contactform-container">';
-    foreach ($selected_form_fields as $form_element) {
-        echo '<div><label for="' . $form_element[2] . '"><b>' . $form_element[0] . ': </b></label>';
-        if ($form_element[1] !== 'textarea') {
-            echo '<input type="' . $form_element[1] . '" name="' . $form_element[2] . '" value="" ><br></div>';
-        } else {
-            echo '<textarea name="' . $form_element[2] . '" rows="5" cols="50" value=""></textarea><br></div>';
+    echo count($selected_form_fields);
+    
+        foreach ($selected_form_fields as $form_element) {
+            echo '<div><label for="' . $form_element[2] . '"><b>' . $form_element[0] . ': </b></label>';
+                if ($form_element[1] !== 'textarea') {
+                    echo '<input type="' . $form_element[1] . '" name="' . $form_element[2] . '" value="">';
+                } else {
+                    echo '<textarea name="' . $form_element[2] . '" rows="5" cols="50" value=""></textarea>';
+                }
+                echo '<button class="button-primary panel_button" name="">' . __('Edit') .  '</button>';
+                echo '<button class="button-primary panel_button" name="">' . __('Delete') . '</button>';
+            echo '</div>';
         }
-    }
-    echo '<button type="button" class="simple-contactform-preview-button" disabled>' . $selected_send_button_text . '</button>';
-    echo '</div>';
+        echo '<button type="button" class="simple-contactform-preview-button" disabled>' . $selected_send_button_text . '</button>';
 }
 add_action( 'simple_contactform_loop', 'simple_contactform_show_form');
 

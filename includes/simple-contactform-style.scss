@@ -1,0 +1,18 @@
+#simple-contactform-container {
+    position: relative;
+    width: 50%;
+    margin: 5% auto;
+    & * {
+        margin: 10px 2px;
+    }
+    input {
+        height: 35px;
+        width: 300px;
+    }
+}
+
+
+
+.simple-contactform-preview-button {
+    float: right;
+}

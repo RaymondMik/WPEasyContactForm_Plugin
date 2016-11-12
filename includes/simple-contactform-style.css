@@ -1,8 +1,14 @@
-.simple-contactform-container {
-    position: relative;
-    width: 20%;
-}
+#simple-contactform-container {
+  position: relative;
+  width: 50%;
+  margin: 5% auto; }
+  #simple-contactform-container * {
+    margin: 10px 2px; }
+  #simple-contactform-container input {
+    height: 35px;
+    width: 300px; }
 
 .simple-contactform-preview-button {
-    float: right;
-}
+  float: right; }
+
+/*# sourceMappingURL=simple-contactform-style.css.map */

@@ -21,9 +21,6 @@
                                 <?php echo __( 'Select what fields you want to display in your form. For each field you need to assign a label too', 'simple-contactform-plugin'); ?>
                                 </h4>
                                 <div>
-                                    <!--<label for="simple_contactform_name"><b>Choose input name</b></label>
-                                    <input type="text" id="simple_contactform_select_name" name="simple_contactform_name" value="" placeholder="For example 'user_name' ">-->
-                                    
                                     <label for="simple_contactform_label"><b>Choose input label</b></label>
                                     <input type="text" id="simple_contactform_select_label" name="simple_contactform_label" value="" placeholder="Type label here">
                                     
@@ -49,15 +46,13 @@
                                         <input type="text" name="simple_contactform_send_button" value="<?php echo isset($selected_send_button_text) ? $selected_send_button_text : ''; ?>" required>
                                     </div>
                                 </div>
-                                
-                                <div id="simple_contactform_preview"></div>
-                                
-                                <?php if (isset($selected_form_fields)) : ?>
-                                    <div>
+                                <div id="simple-contactform-container">
+                                    <?php if ( count($selected_form_fields) == 1 ) : ?>
+
                                         <?php simple_contactform_show_form($selected_form_fields, $selected_send_button_text); ?>
-                                    </div>
-                                <?php endif; ?>
-                                
+
+                                    <?php endif; ?>
+                                </div>
                                 <input class="button-primary panel_button" type="submit" name="page_select_submit" value="<?php echo __('Save'); ?>">
 
                             </form>
