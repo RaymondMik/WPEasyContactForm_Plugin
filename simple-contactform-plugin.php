@@ -104,7 +104,7 @@ function simple_contactform_plugin_options_page() {
 
 function simple_contactform_show_form($selected_form_fields, $selected_send_button_text) {
     echo count($selected_form_fields);
-    
+        // add checkbox and radio button
         foreach ($selected_form_fields as $form_element) {
             echo '<div><label for="' . $form_element[2] . '"><b>' . $form_element[0] . ': </b></label>';
                 if ($form_element[1] !== 'textarea') {
@@ -113,7 +113,7 @@ function simple_contactform_show_form($selected_form_fields, $selected_send_butt
                     echo '<textarea name="' . $form_element[2] . '" rows="5" cols="50" value=""></textarea>';
                 }
                 echo '<button class="button-primary panel_button" name="">' . __('Edit') .  '</button>';
-                echo '<button class="button-primary panel_button" name="">' . __('Delete') . '</button>';
+                echo '<button id="simple-contactform-button-delete-saved-item" class="button-primary panel_button" name="">Delete</button>';
             echo '</div>';
         }
         echo '<button type="button" class="simple-contactform-preview-button" disabled>' . $selected_send_button_text . '</button>';

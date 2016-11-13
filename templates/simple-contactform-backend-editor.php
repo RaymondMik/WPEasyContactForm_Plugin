@@ -47,10 +47,14 @@
                                     </div>
                                 </div>
                                 <div id="simple-contactform-container">
-                                    <?php if ( count($selected_form_fields) == 1 ) : ?>
+                                    <?php if ( $selected_form_fields[0][0] != '' ) : ?>
 
                                         <?php simple_contactform_show_form($selected_form_fields, $selected_send_button_text); ?>
 
+                                    <?php else: ?>
+                                    
+                                        <?php echo '<h4 id="simple-contactform-noform-message">There is not form yet!</h4>'; ?>
+                                    
                                     <?php endif; ?>
                                 </div>
                                 <input class="button-primary panel_button" type="submit" name="page_select_submit" value="<?php echo __('Save'); ?>">
