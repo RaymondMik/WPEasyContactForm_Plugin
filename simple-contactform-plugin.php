@@ -55,10 +55,9 @@ function simple_contactform_plugin_options_page() {
             
             $form_elements = explode("," , $new_form_layout_string);
             $form_elements_grouped = array_chunk($form_elements, 4);
-            print_r($form_elements_grouped);
 
             // Save form elements into DB
-			if ($form_elements_grouped != '') {
+			if (isset($form_elements_grouped)) {
 				update_option('simple_contactform_selected_form', $form_elements_grouped);
 			}
 
@@ -102,8 +101,7 @@ function simple_contactform_plugin_options_page() {
 
 }
 
-function simple_contactform_show_form($selected_form_fields, $selected_send_button_text) {
-    echo count($selected_form_fields);
+function simple_contactform_show_form($selected_form_fields, $selected_send_button_text, $is_backend_form) {
         // add checkbox and radio button
         foreach ($selected_form_fields as $form_element) {
             echo '<div><label for="' . $form_element[2] . '"><b>' . $form_element[0] . ': </b></label>';
@@ -111,6 +109,9 @@ function simple_contactform_show_form($selected_form_fields, $selected_send_butt
                     echo '<input type="' . $form_element[1] . '" name="' . $form_element[2] . '" value="">';
                 } else {
                     echo '<textarea name="' . $form_element[2] . '" rows="5" cols="50" value=""></textarea>';
+                }
+                if ($is_backend_form == true) {
+                    echo '<input type="hidden" name="simple_contactform_form_elements" value="' . $form_element[0] . $form_element[1] . $form_element[2] . '">'; 
                 }
                 echo '<button class="button-primary panel_button" name="">' . __('Edit') .  '</button>';
                 echo '<button id="simple-contactform-button-delete-saved-item" class="button-primary panel_button" name="">Delete</button>';

@@ -49,7 +49,7 @@
                                 <div id="simple-contactform-container">
                                     <?php if ( $selected_form_fields[0][0] != '' ) : ?>
 
-                                        <?php simple_contactform_show_form($selected_form_fields, $selected_send_button_text); ?>
+                                        <?php simple_contactform_show_form($selected_form_fields, $selected_send_button_text, true); ?>
 
                                     <?php else: ?>
                                     

@@ -59,6 +59,7 @@ jQuery(document).ready(function() {
     jQuery('button#simple-contactform-button-delete-saved-item').on('click', function(el){
        el.preventDefault();
        jQuery(this).parent().fadeOut('fast');
+       jQuery(this).siblings().remove();
     });
     
     
