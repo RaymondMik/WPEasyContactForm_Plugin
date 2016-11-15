@@ -20,7 +20,7 @@
                                 <h4>
                                 <?php echo __( 'Select what fields you want to display in your form. For each field you need to assign a label too', 'simple-contactform-plugin'); ?>
                                 </h4>
-                                <div>
+                                <div id="simple-contactform-selectform-container">
                                     <label for="simple_contactform_label"><b>Choose input label</b></label>
                                     <input type="text" id="simple_contactform_select_label" name="simple_contactform_label" value="" placeholder="Type label here">
                                     
@@ -35,7 +35,8 @@
                                     </select>
                                     <input type="checkbox" id="simple_contactform_required" name="simple_contactform_required" value="required"> Required
                                     <button id="simple_contactform_add_element" class="button-primary"><?php echo __('Add'); ?></button>
-                                    
+                                </div>
+                                <div>
                                     <div>
                                         <label for="simple_contactform_recipient"><?php echo __('Recipient e-mail') ?></label>
                                         <input type="email" name="simple_contactform_recipient" value="<?php echo isset($selected_form_recipient) ? $selected_form_recipient : ''; ?>" required>
@@ -67,6 +68,21 @@
             </div><!-- post-body-content -->
         </div><!-- #post-body .metabox-holder .columns-2 -->
         <br class="clear">
+        
+        <div class="modal fade" id="simple-contactform-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel"><?php echo __('Edit'); ?></h4>
+              </div>
+              <div id="simple-contactform-modal-content" class="modal-body"></div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('Close'); ?></button>
+                <button type="button" class="btn btn-primary"><?php echo __('Confirm'); ?></button>
+              </div>
+            </div>
+          </div>
+        </div>
 
     </div><!-- #poststuff -->
 </div><!-- .wrap -->

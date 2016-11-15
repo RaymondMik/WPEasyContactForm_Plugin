@@ -113,7 +113,7 @@ function simple_contactform_show_form($selected_form_fields, $selected_send_butt
                 if ($is_backend_form == true) {
                     echo '<input type="hidden" name="simple_contactform_form_elements" value="' . $form_element[0] . $form_element[1] . $form_element[2] . '">'; 
                 }
-                echo '<button class="button-primary panel_button" name="">' . __('Edit') .  '</button>';
+                echo '<button id="simple-contactform-button-edit-saved-item" class="button-primary panel_button" name="">' . __('Edit') .  '</button>';
                 echo '<button id="simple-contactform-button-delete-saved-item" class="button-primary panel_button" name="">Delete</button>';
             echo '</div>';
         }
@@ -173,6 +173,8 @@ add_shortcode( 'simple_contactform_plugin', 'simple_contactform_plugin_shortcode
 //Enqueue Backend Scripts and Styles
 function simple_contactform_plugin_enqueue() {
     global $plugin_url;
+    wp_enqueue_style( 'simple_contactform_plugin_bootstrap_css', ($plugin_url . '/includes/bootstrap/css/bootstrap.min.css') );
+    wp_enqueue_script( 'simple_contactform_plugin_bootstrap_js', ($plugin_url . '/includes/bootstrap/js/bootstrap.min.js') );
     wp_enqueue_style( 'simple_contactform_plugin_css', ($plugin_url . '/includes/simple-contactform-style.css') );
     wp_enqueue_script( 'simple_contactform_plugin_js', ($plugin_url . '/includes/simple-contactform-script.js'), array('jquery'), '', true );
 }

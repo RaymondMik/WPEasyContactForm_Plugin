@@ -56,11 +56,22 @@ jQuery(document).ready(function() {
     });
     
     // Delete saved form element
-    jQuery('button#simple-contactform-button-delete-saved-item').on('click', function(el){
-       el.preventDefault();
+    jQuery('button#simple-contactform-button-delete-saved-item').on('click', function(e){
+       e.preventDefault();
        jQuery(this).parent().fadeOut('fast');
        jQuery(this).siblings().remove();
     });
+    
+    // Edit saved form element
+    jQuery('button#simple-contactform-button-edit-saved-item').on('click', function(e){
+        e.preventDefault();
+        
+        var formEdit = jQuery('#simple-contactform-selectform-container').html();
+        console.log(formEdit);
+        //jQuery(this).parent().append(formEdit);
+        jQuery('#simple-contactform-modal-content').append(formEdit);
+        jQuery('#simple-contactform-modal').modal('show');
+    })
     
     
     
