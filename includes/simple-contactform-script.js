@@ -1,4 +1,6 @@
 //Custom Form BackEnd JS
+
+// print form Preview
 jQuery(document).ready(function() {
     function printFormElement(labelValue, inputType, inputName, inputRequired) {
         var required = inputRequired == true ? 'required' : '';
@@ -18,6 +20,7 @@ jQuery(document).ready(function() {
     }
     
     var formElements = [];
+    // do jquery for loop on already existing input hidden
     var sendToServer = [];
     var formElementCounter = 1;
     
@@ -65,11 +68,14 @@ jQuery(document).ready(function() {
     // Edit saved form element
     jQuery('button#simple-contactform-button-edit-saved-item').on('click', function(e){
         e.preventDefault();
-        
+        formElementCounter++;
         var formEdit = jQuery('#simple-contactform-selectform-container').html();
         console.log(formEdit);
         //jQuery(this).parent().append(formEdit);
-        jQuery('#simple-contactform-modal-content').append(formEdit);
+        // remove element if close button is pressed;
+        if (formElementCounter == 2) {
+            jQuery('#simple-contactform-modal-content').append(formEdit);
+        }
         jQuery('#simple-contactform-modal').modal('show');
     })
     

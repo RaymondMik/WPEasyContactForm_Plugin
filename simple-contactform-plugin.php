@@ -53,6 +53,8 @@ function simple_contactform_plugin_options_page() {
 			$recipient_email_address = $_POST['simple_contactform_recipient'];
             $send_button_text = $_POST['simple_contactform_send_button'];
             
+            echo $new_form_layout_string;
+            
             $form_elements = explode("," , $new_form_layout_string);
             $form_elements_grouped = array_chunk($form_elements, 4);
 
@@ -69,33 +71,16 @@ function simple_contactform_plugin_options_page() {
 				update_option('simple_contactform_send_button_text', $send_button_text);
 			}
             
-            
 		}
 	}
-
+    
     // Retrieve form elements from DB
     $selected_form_fields = get_option('simple_contactform_selected_form');
     $selected_form_recipient = get_option('simple_contactform_selected_recipient');
     $selected_send_button_text = get_option('simple_contactform_send_button_text');
     
-//    print_r($selected_form_fields);
-//    var_dump($selected_form_recipient);
-//    var_dump($selected_send_button_text);
+    print_r($selected_form_fields);
     
-	/*if ( isset($_POST['custom_tooltip_form_submitted_delete']) ) { 
-
-		$hidden_field_delete = esc_html($_POST['custom_tooltip_form_submitted_delete']);
-
-		if ( $hidden_field_delete == 'Y' ) {
-			if ( isset($_POST['delete_selected_page']) ) {
-				delete_option('page_selected');
-			}
-			if ( isset($_POST['delete_selected_post']) ) {
-				delete_option('post_selected');
-			}
-		}
-	}*/
-
 	//add Admin Menu Layout
 	require('templates/simple-contactform-backend-editor.php');
 
@@ -111,7 +96,7 @@ function simple_contactform_show_form($selected_form_fields, $selected_send_butt
                     echo '<textarea name="' . $form_element[2] . '" rows="5" cols="50" value=""></textarea>';
                 }
                 if ($is_backend_form == true) {
-                    echo '<input type="hidden" name="simple_contactform_form_elements" value="' . $form_element[0] . $form_element[1] . $form_element[2] . '">'; 
+                    echo '<input type="hidden" name="simple_contactform_form_elements" value="' . $form_element[0] . ',' . $form_element[1] . ',' . $form_element[2] . ',' . $form_element[3] . '">'; 
                 }
                 echo '<button id="simple-contactform-button-edit-saved-item" class="button-primary panel_button" name="">' . __('Edit') .  '</button>';
                 echo '<button id="simple-contactform-button-delete-saved-item" class="button-primary panel_button" name="">Delete</button>';
