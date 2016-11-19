@@ -21,15 +21,20 @@ jQuery(document).ready(function() {
     }
     
     var formElements = [];
-    // Get form elements already saved in the DB
     var sendToServer = [];
-    jQuery( "input:hidden" ).each(function( index ) {
-        if (index >= 1) {
-            sendToServer.push(jQuery( this ).val());
-        }
-    });
     var formElementCounter = 1;
     
+    // Get form elements already saved in the DB
+    jQuery( 'input[type="hidden"]' ).each(function( index ) {
+        if (index >= 1) {
+            sendToServer.push(jQuery( this ).val());
+            formElementCounter++;
+        }
+    });
+    
+    console.log(formElementCounter);
+    //console.log(sendToServer);
+
     jQuery('#simple_contactform_add_element').on('click', function(e){
         e.preventDefault();
         
@@ -39,20 +44,24 @@ jQuery(document).ready(function() {
         var inputName = 'simple-contactform-element-' + formElementCounter;
         var requiredElement = jQuery('#simple_contactform_required:checked')
         var inputRequired = requiredElement.is(':checked') ? true : false;
-        var formContainer = jQuery('#simple-contactform-container');
         var noFormMessage = jQuery('#simple-contactform-noform-message');
+        formElementCounter++;
         
         var getFormElements = printFormElement(labelValue, inputType, inputName, inputRequired);
         var formPreviewElement = '<div>' + getFormElements.printHtml + getFormElements.inputRequired + '<button id="simple-contactform-button-delete" class="button-primary panel_button" name="">Delete</button></div>';
          
         sendToServer.push(getFormElements.labelValue, getFormElements.inputType, getFormElements.inputName, getFormElements.inputRequired);
+        //console.log(sendToServer);
+        
         var formSendElement = '<input type="hidden" name="simple_contactform_form_elements" value="' + sendToServer + '">';
-        console.log(sendToServer);
+        var formContainer = jQuery('#simple-contactform-container');
+//        if (formElementCounter == 2) {
+//           jQuery(formSendElement).appendTo(formContainer); 
+//        }
         
         noFormMessage.hide();
         jQuery(formPreviewElement + formSendElement).appendTo(formContainer).hide().fadeIn('fast');
         
-        formElementCounter++;
         labelElement.val('');
         requiredElement.prop('checked', false);
   
@@ -75,7 +84,9 @@ jQuery(document).ready(function() {
     jQuery('button#simple-contactform-button-edit-saved-item').on('click', function(e){
         e.preventDefault();
         jQuery('#simple-contactform-modal').modal('show');
-        var thisItem = jQuery(this).siblings('input:hidden').val();
+        var thisItem = jQuery(this).siblings('input:hidden');
+        var items = thisItem.val().split(',');
+        console.log(items);
         
         // FUNCTION TO REPLACE CURRENT INPUT ELEMENT WITH NEW ONE SELECTED IN MODAL
         jQuery('button#simple-contactform-button-replace-saved-item').on('click', function(e){
@@ -90,11 +101,17 @@ jQuery(document).ready(function() {
                 inputType: newInputType,
                 inputRequired: newInputRequired
             };
-            console.log(editData);
+            items[0] = editData.label;
+            items[1] = editData.inputType;
+            items[3] = editData.inputRequired;
+            var newStringVal = items[0] + ',' + items[1] + ',' + items[2] + ',' + items[3];
+            thisItem.val(newStringVal);
+            jQuery('#simple-contactform-modal').modal('hide');
             // TO DO 
-            // 1) REPLACE DATA OF THIS ELEMEN
-            // 2) RESET NEW DATA
-            // 3) CREATE A FUNCTION FOR GETTING FORM VALUES AND DRYing CODE UP
+            // 1) DO NOT PUSH DATA INTO A SINGLE HIDDEN INPUT
+            // 2) FOR LOOP THROUG ALL HIDDEN INPUTS
+            // 3) POPULATE SINGLE INPUT VALUE WITH ALL VALUES
+            // 4) THE LOOP IS TRIGGERED EVERY TIME SOMETHING GOT UPDATED (DELETE, EDIT, ETC)
 
         });
         
