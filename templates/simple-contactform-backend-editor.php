@@ -69,20 +69,7 @@
         </div><!-- #post-body .metabox-holder .columns-2 -->
         <br class="clear">
         
-        <div class="modal fade" id="simple-contactform-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel"><?php echo __('Edit'); ?></h4>
-              </div>
-              <div id="simple-contactform-modal-content" class="modal-body"></div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('Close'); ?></button>
-                <button type="button" class="btn btn-primary"><?php echo __('Confirm'); ?></button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <?php require('simple-contactform-edit-modal.php'); ?>
 
     </div><!-- #poststuff -->
 </div><!-- .wrap -->

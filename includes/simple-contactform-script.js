@@ -1,7 +1,8 @@
 //Custom Form BackEnd JS
 
-// print form Preview
+// Print form Preview
 jQuery(document).ready(function() {
+    
     function printFormElement(labelValue, inputType, inputName, inputRequired) {
         var required = inputRequired == true ? 'required' : '';
         if ( inputType == 'textarea') {
@@ -20,8 +21,13 @@ jQuery(document).ready(function() {
     }
     
     var formElements = [];
-    // do jquery for loop on already existing input hidden
+    // Get form elements already saved in the DB
     var sendToServer = [];
+    jQuery( "input:hidden" ).each(function( index ) {
+        if (index >= 1) {
+            sendToServer.push(jQuery( this ).val());
+        }
+    });
     var formElementCounter = 1;
     
     jQuery('#simple_contactform_add_element').on('click', function(e){
@@ -68,16 +74,10 @@ jQuery(document).ready(function() {
     // Edit saved form element
     jQuery('button#simple-contactform-button-edit-saved-item').on('click', function(e){
         e.preventDefault();
-        formElementCounter++;
-        var formEdit = jQuery('#simple-contactform-selectform-container').html();
-        console.log(formEdit);
-        //jQuery(this).parent().append(formEdit);
-        // remove element if close button is pressed;
-        if (formElementCounter == 2) {
-            jQuery('#simple-contactform-modal-content').append(formEdit);
-        }
         jQuery('#simple-contactform-modal').modal('show');
-    })
+    });
+    
+    // FUNCTION TO REPLACE CURRENT INPUT ELEMENT WITH NEW ONE SELECTED IN MODAL
     
     
     
