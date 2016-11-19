@@ -75,10 +75,30 @@ jQuery(document).ready(function() {
     jQuery('button#simple-contactform-button-edit-saved-item').on('click', function(e){
         e.preventDefault();
         jQuery('#simple-contactform-modal').modal('show');
+        var thisItem = jQuery(this).siblings('input:hidden').val();
+        
+        // FUNCTION TO REPLACE CURRENT INPUT ELEMENT WITH NEW ONE SELECTED IN MODAL
+        jQuery('button#simple-contactform-button-replace-saved-item').on('click', function(e){
+            e.preventDefault();
+            var newLabelElement = jQuery('#simple-contactform-modal-content').find('#simple_contactform_select_label').val();
+            var newLabelValue = newLabelElement != '' ? newLabelElement : '';
+            var newInputType = jQuery('#simple-contactform-modal-content').find('#simple_contactform_select_element').val();
+            var newRequiredElement = jQuery('#simple-contactform-modal-content').find('#simple_contactform_required:checked')
+            var newInputRequired = newRequiredElement.is(':checked') ? true : false;
+            var editData = {
+                label: newLabelValue,
+                inputType: newInputType,
+                inputRequired: newInputRequired
+            };
+            console.log(editData);
+            // TO DO 
+            // 1) REPLACE DATA OF THIS ELEMEN
+            // 2) RESET NEW DATA
+            // 3) CREATE A FUNCTION FOR GETTING FORM VALUES AND DRYing CODE UP
+
+        });
+        
     });
     
-    // FUNCTION TO REPLACE CURRENT INPUT ELEMENT WITH NEW ONE SELECTED IN MODAL
-    
-    
-    
+
 });
