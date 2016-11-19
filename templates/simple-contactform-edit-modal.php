@@ -28,16 +28,3 @@
         </div>
     </div>
 </div>
-<script>
-    var labelElement = jQuery('#simple_contactform_select_label');
-    var labelValue = labelElement.val() != '' ? labelElement.val() : '';
-    var inputType = jQuery('#simple_contactform_select_element').val();
-    var requiredElement = jQuery('#simple_contactform_required:checked')
-    var inputRequired = requiredElement.is(':checked') ? true : false;
-    var editData = {
-        label: labelValue,
-        inputType: inputType,
-        inputRequired: inputRequired
-    };
-    jQuery('button#simple-contactform-button-replace-saved-item').data('edit-form', editData);
-</script>
