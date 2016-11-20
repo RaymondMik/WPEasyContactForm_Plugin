@@ -20,6 +20,7 @@ jQuery(document).ready(function() {
         return returnFormElements;
     }
     
+    var formContainer = jQuery('#simple-contactform-container');
     var formElements = [];
     var sendToServer = [];
     var formElementCounter = 1;
@@ -27,14 +28,11 @@ jQuery(document).ready(function() {
     // Get form elements already saved in the DB
     jQuery( 'input[type="hidden"]' ).each(function( index ) {
         if (index >= 1) {
-            sendToServer.push(jQuery( this ).val());
+            //sendToServer.push(jQuery( this ).val());
             formElementCounter++;
         }
     });
     
-    console.log(formElementCounter);
-    //console.log(sendToServer);
-
     jQuery('#simple_contactform_add_element').on('click', function(e){
         e.preventDefault();
         
@@ -51,14 +49,9 @@ jQuery(document).ready(function() {
         var formPreviewElement = '<div>' + getFormElements.printHtml + getFormElements.inputRequired + '<button id="simple-contactform-button-delete" class="button-primary panel_button" name="">Delete</button></div>';
          
         sendToServer.push(getFormElements.labelValue, getFormElements.inputType, getFormElements.inputName, getFormElements.inputRequired);
-        //console.log(sendToServer);
-        
-        var formSendElement = '<input type="hidden" name="simple_contactform_form_elements" value="' + sendToServer + '">';
-        var formContainer = jQuery('#simple-contactform-container');
-//        if (formElementCounter == 2) {
-//           jQuery(formSendElement).appendTo(formContainer); 
-//        }
-        
+
+        var formSendElement = '<input type="hidden" name="simple_contactform_form_elements" value="' + getFormElements.labelValue + ',' + getFormElements.inputType + ',' + getFormElements.inputName + ',' + getFormElements.inputRequired + '">';
+       
         noFormMessage.hide();
         jQuery(formPreviewElement + formSendElement).appendTo(formContainer).hide().fadeIn('fast');
         
@@ -108,14 +101,21 @@ jQuery(document).ready(function() {
             thisItem.val(newStringVal);
             jQuery('#simple-contactform-modal').modal('hide');
             // TO DO 
-            // 1) DO NOT PUSH DATA INTO A SINGLE HIDDEN INPUT
-            // 2) FOR LOOP THROUG ALL HIDDEN INPUTS
-            // 3) POPULATE SINGLE INPUT VALUE WITH ALL VALUES
-            // 4) THE LOOP IS TRIGGERED EVERY TIME SOMETHING GOT UPDATED (DELETE, EDIT, ETC)
-
+            // MODIFY INPUT ELEMENTS APPEARANCE
         });
         
     });
     
-
+    jQuery('input#simple-contactform-save').on('click', function(e){
+        var sendToServer = [];
+        jQuery( 'input[type="hidden"]' ).each(function( index ) {
+            if (index >= 1) {
+                sendToServer.push(jQuery( this ).val());
+            }
+        });
+        var formSendElements = '<input type="hidden" name="simple_contactform_form_elements" value="' + sendToServer + '">';
+        jQuery(formSendElements).appendTo(formContainer);
+        console.log(formSendElements );
+    });
+    
 });

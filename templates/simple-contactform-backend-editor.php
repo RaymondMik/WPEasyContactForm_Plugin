@@ -58,7 +58,7 @@
                                     
                                     <?php endif; ?>
                                 </div>
-                                <input class="button-primary panel_button" type="submit" name="page_select_submit" value="<?php echo __('Save'); ?>">
+                                <input id="simple-contactform-save" class="button-primary panel_button" type="submit" name="page_select_submit" value="<?php echo __('Save'); ?>">
 
                             </form>
                             
