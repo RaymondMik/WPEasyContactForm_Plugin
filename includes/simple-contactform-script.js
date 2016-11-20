@@ -11,7 +11,7 @@ jQuery(document).ready(function() {
             var fieldType = '<input type="' + inputType + '" name="' + inputName + '" value="" >';
         }
         var returnFormElements = {
-            printHtml: '<label for="' + inputName + '"><b>' + labelValue + ': </b></label>' + fieldType,
+            printHtml: '<label for="' + inputName + '">' + labelValue + ': </label>' + fieldType,
             labelValue: labelValue,
             inputType: inputType,
             inputName: inputName,
@@ -26,7 +26,7 @@ jQuery(document).ready(function() {
     var formElementCounter = 1;
     
     // Get form elements already saved in the DB
-    jQuery( 'input[type="hidden"]' ).each(function( index ) {
+    jQuery('input[type="hidden"]').each(function(index) {
         if (index >= 1) {
             //sendToServer.push(jQuery( this ).val());
             formElementCounter++;
@@ -50,7 +50,7 @@ jQuery(document).ready(function() {
          
         sendToServer.push(getFormElements.labelValue, getFormElements.inputType, getFormElements.inputName, getFormElements.inputRequired);
 
-        var formSendElement = '<input type="hidden" name="simple_contactform_form_elements" value="' + getFormElements.labelValue + ',' + getFormElements.inputType + ',' + getFormElements.inputName + ',' + getFormElements.inputRequired + '">';
+        var formSendElement = '<input type="hidden" name="simple_contactform_form_element" value="' + getFormElements.labelValue + ',' + getFormElements.inputType + ',' + getFormElements.inputName + ',' + getFormElements.inputRequired + '">';
        
         noFormMessage.hide();
         jQuery(formPreviewElement + formSendElement).appendTo(formContainer).hide().fadeIn('fast');
@@ -77,9 +77,11 @@ jQuery(document).ready(function() {
     jQuery('button#simple-contactform-button-edit-saved-item').on('click', function(e){
         e.preventDefault();
         jQuery('#simple-contactform-modal').modal('show');
-        var thisItem = jQuery(this).siblings('input:hidden');
-        var items = thisItem.val().split(',');
-        console.log(items);
+        var thisHiddenItem = jQuery(this).siblings('input[type="hidden"]');
+        var thisItemLabel = jQuery(this).siblings('label');
+        var thisItemInput = jQuery(this).siblings('input[name="simple_contactform_form_elements"]');
+        var items = thisHiddenItem.val().split(',');
+        console.log(thisItemLabel);
         
         // FUNCTION TO REPLACE CURRENT INPUT ELEMENT WITH NEW ONE SELECTED IN MODAL
         jQuery('button#simple-contactform-button-replace-saved-item').on('click', function(e){
@@ -98,17 +100,23 @@ jQuery(document).ready(function() {
             items[1] = editData.inputType;
             items[3] = editData.inputRequired;
             var newStringVal = items[0] + ',' + items[1] + ',' + items[2] + ',' + items[3];
-            thisItem.val(newStringVal);
+            thisHiddenItem.val(newStringVal);
+            thisItemLabel.text(editData.label + ':');
+            //thisItemInput.attr('type', editData.inputType);
             jQuery('#simple-contactform-modal').modal('hide');
             // TO DO 
-            // MODIFY INPUT ELEMENTS APPEARANCE
+            // UPDATE INPUT TYPE
+            // MAKE LABEL BOLD IN CSS
+            // HANDLE TEXTAREA CASE
+            // HANDLE RADIO CASE
+            // HANDLE PLACEHOLDER
         });
         
     });
     
     jQuery('input#simple-contactform-save').on('click', function(e){
         var sendToServer = [];
-        jQuery( 'input[type="hidden"]' ).each(function( index ) {
+        jQuery('input[type="hidden"]').each(function(index) {
             if (index >= 1) {
                 sendToServer.push(jQuery( this ).val());
             }

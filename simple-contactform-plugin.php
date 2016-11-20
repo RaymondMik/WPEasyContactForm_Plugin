@@ -89,7 +89,7 @@ function simple_contactform_plugin_options_page() {
 function simple_contactform_show_form($selected_form_fields, $selected_send_button_text, $is_backend_form) {
         // add checkbox and radio button
         foreach ($selected_form_fields as $form_element) {
-            echo '<div><label for="' . $form_element[2] . '"><b>' . $form_element[0] . ': </b></label>';
+            echo '<div><label for="' . $form_element[2] . '">' . $form_element[0] . ': </label>';
                 if ($form_element[1] !== 'textarea') {
                     echo '<input type="' . $form_element[1] . '" name="' . $form_element[2] . '" value="">';
                 } else {
