@@ -88,12 +88,13 @@ function simple_contactform_plugin_options_page() {
 
 function simple_contactform_show_form($selected_form_fields, $selected_send_button_text, $is_backend_form) {
         // add checkbox and radio button
+        $form_element_class = $is_backend_form == true ? 'simple-contactform-preview-element' : 'simple-contactform-element';
         foreach ($selected_form_fields as $form_element) {
             echo '<div><label for="' . $form_element[2] . '">' . $form_element[0] . ': </label>';
                 if ($form_element[1] !== 'textarea') {
-                    echo '<input type="' . $form_element[1] . '" name="' . $form_element[2] . '" value="">';
+                    echo '<input type="' . $form_element[1] . '" name="' . $form_element[2] . '" class="' . $form_element_class . '" value="">';
                 } else {
-                    echo '<textarea name="' . $form_element[2] . '" rows="5" cols="50" value=""></textarea>';
+                    echo '<textarea name="' . $form_element[2] . '" class="' . $form_element_class . '" rows="5" cols="50" value=""></textarea>';
                 }
                 if ($is_backend_form == true) {
                     echo '<input type="hidden" name="simple_contactform_form_elements" value="' . $form_element[0] . ',' . $form_element[1] . ',' . $form_element[2] . ',' . $form_element[3] . '">'; 

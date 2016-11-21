@@ -6,9 +6,9 @@ jQuery(document).ready(function() {
     function printFormElement(labelValue, inputType, inputName, inputRequired) {
         var required = inputRequired == true ? 'required' : '';
         if ( inputType == 'textarea') {
-            var fieldType = '<textarea name="' + inputName + '" rows="5" cols="50" value="" ></textarea>';
+            var fieldType = '<textarea name="' + inputName + '" class="simple-contactform-preview-element" rows="5" cols="50" value="" ></textarea>';
         } else {
-            var fieldType = '<input type="' + inputType + '" name="' + inputName + '" value="" >';
+            var fieldType = '<input type="' + inputType + ' name="' + inputName + '" class="simple-contactform-preview-element" value="" >';
         }
         var returnFormElements = {
             printHtml: '<label for="' + inputName + '">' + labelValue + ': </label>' + fieldType,
@@ -79,7 +79,7 @@ jQuery(document).ready(function() {
         jQuery('#simple-contactform-modal').modal('show');
         var thisHiddenItem = jQuery(this).siblings('input[type="hidden"]');
         var thisItemLabel = jQuery(this).siblings('label');
-        var thisItemInput = jQuery(this).siblings('input[name="simple_contactform_form_elements"]');
+        var thisItemInput = jQuery(this).siblings('.simple-contactform-preview-element');
         var items = thisHiddenItem.val().split(',');
         console.log(thisItemLabel);
         
@@ -102,10 +102,10 @@ jQuery(document).ready(function() {
             var newStringVal = items[0] + ',' + items[1] + ',' + items[2] + ',' + items[3];
             thisHiddenItem.val(newStringVal);
             thisItemLabel.text(editData.label + ':');
-            //thisItemInput.attr('type', editData.inputType);
+            thisItemInput.prop('type', editData.inputType);
             jQuery('#simple-contactform-modal').modal('hide');
             // TO DO 
-            // UPDATE INPUT TYPE
+            // FILL MODAL FORM WITH VALUE OF SELECTED INPUT ELEMENT
             // MAKE LABEL BOLD IN CSS
             // HANDLE TEXTAREA CASE
             // HANDLE RADIO CASE
