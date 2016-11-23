@@ -5,11 +5,11 @@
                 <h4 class="modal-title" id="myModalLabel"><?php echo __('Edit'); ?></h4>
             </div>
             <div id="simple-contactform-modal-content" class="modal-body">
-                
-                    <label for="simple_contactform_label"><b>Choose input label</b></label>
-                    <input type="text" id="simple_contactform_select_label" name="simple_contactform_label" value="" placeholder="Type label here">
-                    <label for="simple_contactform_element"><b>Choose input type</b></label>
-                    <select id="simple_contactform_select_element" name="simple_contactform_element" required> 
+                    <?php print_r($selected_form_fields); ?>
+                    <label for="simple_contactform_label" class="simple-contactform-modal-label">Choose input label</label>
+                    <input type="text" id="simple_contactform_modal_select_label" name="simple_contactform_label" value="" placeholder="">
+                    <label for="simple_contactform_element">Choose input type</label>
+                    <select id="simple_contactform_modal_select_element" name="simple_contactform_element" required> 
                         <option value="text" selected><?php echo esc_html_e( 'Single Text Line', 'simple-contactform-plugin' ); ?></option>
                         <option value="email"><?php echo esc_html_e( 'Email', 'simple-contactform-plugin' ); ?></option>
                         <option value="tel"><?php echo esc_html_e( 'Phone number', 'simple-contactform-plugin' ); ?></option>
