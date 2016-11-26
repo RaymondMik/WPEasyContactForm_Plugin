@@ -13,7 +13,6 @@ $plugin_url = plugins_url() . "/simple-contactform-plugin";
 $options = array();
 $form_elements = array();
 
-
 // Create Plugin Admin Menu 
 function simple_contactform_plugin_menu() {
 	//add_option_page( $page_title, $menu_title, $capability, $menu-slug, $function)
@@ -36,11 +35,11 @@ function simple_contactform_plugin_options_page() {
 		wp_die('You do not have sufficient permission to access this page');
 	}
 
-	global $plugin_url;
-	global $options;
-    global $selected_form_fields;
-    global $selected_form_recipient;
-    global $selected_send_button_text;
+//	global $plugin_url;
+//	global $options;
+//    global $selected_form_fields;
+//    global $selected_form_recipient;
+//    global $selected_send_button_text;
 	
 	//check if the form has been submitted
 	if ( isset($_POST['simple_contactform_form_submitted']) ) {
@@ -79,48 +78,45 @@ function simple_contactform_plugin_options_page() {
     $selected_form_recipient = get_option('simple_contactform_selected_recipient');
     $selected_send_button_text = get_option('simple_contactform_send_button_text');
     
-    print_r($selected_form_fields);
-    
 	//add Admin Menu Layout
 	require('templates/simple-contactform-backend-editor.php');
 
 }
 
+// PRINT FORM TO EITHER FRONT OR BACK END
 function simple_contactform_show_form($selected_form_fields, $selected_send_button_text, $is_backend_form) {
-        $form_element_class = $is_backend_form == true ? 'simple-contactform-preview-element' : 'simple-contactform-element';
+    $form_element_class = $is_backend_form === true ? 'simple-contactform-preview-element' : 'simple-contactform-element';
+    $form_opening_tag = $is_backend_form !== true ? '<form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="POST">' : '';
+    $form_closing_tag = $is_backend_form !== true ? '</form>' : '' ;
+    $disabled = $is_backend_form === true ? 'disabled' : '';
+    
+    echo $form_opening_tag;
+    foreach ($selected_form_fields as $form_element) {
+        $required_input = $is_backend_form === false ? $form_element[3] : '';
+        $required_symbol = $form_element[3] === 'required' ? '*' : '';
+        $pattern_html_attr = $form_element[1] !== 'email' ? 'pattern="[a-zA-Z0-9 ]+"' : '';
         
-        foreach ($selected_form_fields as $form_element) {
-            $required_input = $is_backend_form == false ? $form_element[3] : '';
-            $required_symbol = $form_element[3] == 'required' ? '*' : '';
-            
-            echo '<div>';
-            echo '<div><label for="' . $form_element[2] . '">' . $form_element[0] . ' </label><br>';
-                if ($form_element[1] !== 'textarea') {
-                    echo '<input type="' . $form_element[1] . '" name="' . $form_element[2] . '" class="' . $form_element_class . '" value="" ' . $required_input . '>' . $required_symbol;
-                } else {
-                    echo '<textarea name="' . $form_element[2] . '" class="' . $form_element_class . '" rows="5" cols="50" value="" ' . $required_input . '></textarea>' . $required_symbol;
-                }
-                if ($is_backend_form == true) {
-                    echo '<input type="hidden" name="simple_contactform_form_elements" value="' . $form_element[0] . ',' . $form_element[1] . ',' . $form_element[2] . ',' . $form_element[3] . '">'; 
-                }
-            echo '</div>';
+        echo '<div><label for="' . $form_element[2] . '">' . $form_element[0] . ' </label><br>';
+            if ($form_element[1] !== 'textarea') {
+                echo '<input type="' . $form_element[1] . '" name="' . $form_element[2] . '" ' . $pattern_html_attr . '" class="' . $form_element_class . '" value="' . ( isset( $_POST[$form_element[2]] ) ? esc_attr( $_POST[$form_element[2]] ) : '' ) . '" ' . $required_input .  ' size="40" >' . $required_symbol;
+            } else {
+                echo '<textarea name="' . $form_element[2] . '" class="' . $form_element_class . '" rows="5" cols="50" value="' . ( isset( $_POST[$form_element[2]] ) ? esc_attr( $_POST[$form_element[2]] ) : '' ) . '" ' . $required_input . '></textarea>' . $required_symbol;
+            }
+            if ($is_backend_form === true) {
+                echo '<input type="hidden" name="simple_contactform_form_elements" value="' . $form_element[0] . ',' . $form_element[1] . ',' . $form_element[2] . ',' . $form_element[3] . '">'; 
+            }
+        echo '</div>';
+        if ($is_backend_form === true) {
             echo '<button id="simple-contactform-button-edit-saved-item" class="button-primary panel_button" name="">' . __('Edit') .  '</button>';
             echo '<button id="simple-contactform-button-delete-saved-item" class="button-primary panel_button" name="">Delete</button>';
-            echo '</div>';
-            
         }
-    
-        echo '<button type="button" class="simple-contactform-preview-button" disabled>' . $selected_send_button_text . '</button>';
+        if ($is_backend_form === true) {echo '</div>';}
+
+    }
+    echo '<input type="submit" name="simple-contactform-submitted"' . $disabled . ' value="' . $selected_send_button_text . '" >';
+    echo $form_closing_tag;
 }
 add_action( 'simple_contactform_loop', 'simple_contactform_show_form');
-
-
-function simple_contactform_plugin_markup_code() { 
-    
-    //Form markup goes here
-    
-
-}
 
 
 function simple_contactform_plugin_send_mail() {
@@ -152,15 +148,16 @@ function simple_contactform_plugin_send_mail() {
     }
 }
 
-
 function simple_contactform_plugin_shortcode() {
+    $selected_form_fields = get_option('simple_contactform_selected_form');
+    $selected_send_button_text = get_option('simple_contactform_send_button_text');
+    
     ob_start();
-    simple_form_send_mail();
-    simple_form_markup_code();
+    simple_contactform_show_form($selected_form_fields, $selected_send_button_text, false);
     return ob_get_clean();
 }
 add_shortcode( 'simple_contactform_plugin', 'simple_contactform_plugin_shortcode' );
-//[simple_contactform_plugin]
+//Shortcode will be [simple_contactform_plugin]
 
 
 //Enqueue Backend Scripts and Styles
