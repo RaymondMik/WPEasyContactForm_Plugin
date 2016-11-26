@@ -87,7 +87,6 @@ function simple_contactform_plugin_options_page() {
 }
 
 function simple_contactform_show_form($selected_form_fields, $selected_send_button_text, $is_backend_form) {
-        // TO DO add radio button
         $form_element_class = $is_backend_form == true ? 'simple-contactform-preview-element' : 'simple-contactform-element';
         
         foreach ($selected_form_fields as $form_element) {

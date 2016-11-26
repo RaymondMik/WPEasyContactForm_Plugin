@@ -17,10 +17,9 @@
                                 <h4>
                                 <?php echo __( 'Select what fields you want to display in your form. For each field you need to assign a label too', 'simple-contactform-plugin'); ?>
                                 </h4>
-                                <div id="simple-contactform-selectform-container">
+                                <div id="simple-contactform-add-form-container">
                                     <label for="simple_contactform_label"><b>Choose input label</b></label>
                                     <input type="text" id="simple_contactform_select_label" name="simple_contactform_label" value="" placeholder="Type label here">
-                                    
                                     <label for="simple_contactform_element"><b>Choose input type</b></label>
                                     <select id="simple_contactform_select_element" name="simple_contactform_element" required> 
                                         <option value="text"><?php echo esc_html_e( 'Single Text Line', 'simple-contactform-plugin' ); ?></option>

@@ -1,13 +1,13 @@
-//Custom Form BackEnd JS
+'use strict';
 
-// Print form Preview
+//CUSTOM FORM BUILDER
+
 jQuery(document).ready(function() {
     
+    // HELPER FUNCTIONS
     function printFormElement(labelValue, inputType, inputName, inputRequired, button) {
-        
         var required = inputRequired == 'required' ? 'required' : '';
         var requiredSymbol = inputRequired == 'required' ? '<span class="required-symbol">*</span>' : '';
-        
         var printHtml = '<div><div><label for="' + inputName + '">' + labelValue + ' </label><br>';
         if ( inputType == 'textarea') {
             printHtml += '<textarea name="' + inputName + '" class="simple-contactform-preview-element" rows="5" cols="50" value="" ></textarea>' + requiredSymbol;
@@ -22,7 +22,27 @@ jQuery(document).ready(function() {
         printHtml += '</div>';
         
         return printHtml;
+    }
+    
+    function getFormValues(mainContainer, needInputName, formElementCounter) {
+        formElementCounter = needInputName === false && typeof formElementCounter === 'undefined' ? '' : formElementCounter;
+        var labelElement = jQuery(mainContainer).find('#simple_contactform_select_label');
+        var labelValue = labelElement.val() != '' ? labelElement.val() : '';
+        var inputType = jQuery(mainContainer).find('#simple_contactform_select_element').val();
+        var inputName = needInputName === true ? 'simple-contactform-element-' + formElementCounter : '';
+        var requiredElement = jQuery(mainContainer).find('#simple_contactform_required:checked')
+        var inputRequired = requiredElement.is(':checked') ? 'required' : '';
         
+        var formValues = {
+            labelElement: labelElement,
+            labelValue: labelValue,
+            inputType: inputType,
+            inputName: inputName,
+            requiredElement: requiredElement,
+            inputRequired: inputRequired
+        }
+        
+        return formValues;
     }
     
     var formElements = [];
@@ -40,25 +60,18 @@ jQuery(document).ready(function() {
     // ADD ELEMENT IN PREVIEW
     jQuery('#simple_contactform_add_element').on('click', function(e){
         e.preventDefault();
-        
-        var labelElement = jQuery('#simple_contactform_select_label');
-        var labelValue = labelElement.val() != '' ? labelElement.val() : '';
-        var inputType = jQuery('#simple_contactform_select_element').val();
-        var inputName = 'simple-contactform-element-' + formElementCounter;
-        var requiredElement = jQuery('#simple_contactform_required:checked')
-        var inputRequired = requiredElement.is(':checked') ? 'required' : '';
         var noFormMessage = jQuery('#simple-contactform-noform-message');
+        var formValues = getFormValues('#simple-contactform-add-form-container', true, formElementCounter);
+        var getFormElement = printFormElement(formValues.labelValue, formValues.inputType, formValues.inputName, formValues.inputRequired, true);
         formElementCounter++;
-        
-        var getFormElement = printFormElement(labelValue, inputType, inputName, inputRequired, true);
         
         // Show element
         noFormMessage.hide();
         jQuery(getFormElement).appendTo(formContainer).hide().fadeIn('fast');
         
         // Reset form fields
-        labelElement.val('');
-        requiredElement.prop('checked', false);
+        formValues.labelElement.val('');
+        formValues.requiredElement.prop('checked', false);
   
         // Delete element
         jQuery('button#simple-contactform-button-delete').on('click', function(el){
@@ -80,29 +93,24 @@ jQuery(document).ready(function() {
         jQuery('#simple-contactform-modal').modal('show');
         var thisHiddenItem = jQuery(this).siblings('div').find('input[type="hidden"]');
         var itemsHiddenInput = thisHiddenItem.val().split(',');
-        
         var thisSiblingsContainer = jQuery(this).siblings('div');
+        
+        // Populate modal form with data from selected form element
         var thisItemLabel = jQuery(this).siblings('div').find('label');
         var thisItemInput = jQuery(this).siblings('div').find('.simple-contactform-preview-element');
-
-        jQuery('#simple_contactform_modal_select_label').val(thisItemLabel.text());
-        jQuery('#simple_contactform_modal_select_element').val(thisItemInput.attr('type'));
+        jQuery('#simple-contactform-edit-form-container').find('#simple_contactform_select_label').val(thisItemLabel.text());
+        jQuery('#simple-contactform-edit-form-container').find('#simple_contactform_select_element').val(thisItemInput.attr('type'));
         
         // Replace element features with those selected in the modal
         jQuery('button#simple-contactform-button-replace-saved-item').on('click', function(e){
             e.preventDefault();
-            var newLabelElement = jQuery('#simple_contactform_modal_select_label').val();
-            var newLabelValue = newLabelElement != '' ? newLabelElement : '';
-            var newInputType = jQuery('#simple_contactform_modal_select_element').val();
-            var newRequiredElement = jQuery('#simple-contactform-modal-content').find('#simple_contactform_required:checked')
-            var newInputRequired = newRequiredElement.is(':checked') ? 'required' : '';
-
-            var newStringVal = newLabelValue + ',' + newInputType + ',' + itemsHiddenInput[2] + ',' + newInputRequired;
+            var newFormValues = getFormValues('#simple-contactform-edit-form-container', false);
+            var newStringVal = newFormValues.labelValue + ',' + newFormValues.InputType + ',' + itemsHiddenInput[2] + ',' + newFormValues.InputRequired;
             thisHiddenItem.val(newStringVal);
             
-            var getNewFormElement = printFormElement(newLabelValue, newInputType, itemsHiddenInput[2], newInputRequired, false);
+            var getNewFormElement = printFormElement(newFormValues.labelValue, newFormValues.inputType, itemsHiddenInput[2], newFormValues.inputRequired, false);
             thisSiblingsContainer.replaceWith(getNewFormElement);
-            
+
             jQuery('#simple-contactform-modal').modal('hide');
         
         });
