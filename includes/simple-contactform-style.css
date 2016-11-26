@@ -7,6 +7,8 @@
   #simple-contactform-container input[type="text"] {
     height: 35px;
     width: 300px; }
+  #simple-contactform-container label {
+    font-weight: bold; }
 
 .simple-contactform-preview-button {
   float: right; }

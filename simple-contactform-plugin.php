@@ -94,7 +94,8 @@ function simple_contactform_show_form($selected_form_fields, $selected_send_butt
             $required_input = $is_backend_form == false ? $form_element[3] : '';
             $required_symbol = $form_element[3] == 'required' ? '*' : '';
             
-            echo '<div><label for="' . $form_element[2] . '">' . $form_element[0] . ' </label>';
+            echo '<div>';
+            echo '<div><label for="' . $form_element[2] . '">' . $form_element[0] . ' </label><br>';
                 if ($form_element[1] !== 'textarea') {
                     echo '<input type="' . $form_element[1] . '" name="' . $form_element[2] . '" class="' . $form_element_class . '" value="" ' . $required_input . '>' . $required_symbol;
                 } else {
@@ -103,10 +104,13 @@ function simple_contactform_show_form($selected_form_fields, $selected_send_butt
                 if ($is_backend_form == true) {
                     echo '<input type="hidden" name="simple_contactform_form_elements" value="' . $form_element[0] . ',' . $form_element[1] . ',' . $form_element[2] . ',' . $form_element[3] . '">'; 
                 }
-                echo '<button id="simple-contactform-button-edit-saved-item" class="button-primary panel_button" name="">' . __('Edit') .  '</button>';
-                echo '<button id="simple-contactform-button-delete-saved-item" class="button-primary panel_button" name="">Delete</button>';
             echo '</div>';
+            echo '<button id="simple-contactform-button-edit-saved-item" class="button-primary panel_button" name="">' . __('Edit') .  '</button>';
+            echo '<button id="simple-contactform-button-delete-saved-item" class="button-primary panel_button" name="">Delete</button>';
+            echo '</div>';
+            
         }
+    
         echo '<button type="button" class="simple-contactform-preview-button" disabled>' . $selected_send_button_text . '</button>';
 }
 add_action( 'simple_contactform_loop', 'simple_contactform_show_form');
