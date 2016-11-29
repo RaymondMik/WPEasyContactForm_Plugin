@@ -1,7 +1,7 @@
 #simple-contactform-container {
   position: relative;
   width: 50%;
-  margin: 5% auto; }
+  margin: 1% auto; }
   #simple-contactform-container * {
     margin: 10px 2px; }
   #simple-contactform-container input[type="text"] {

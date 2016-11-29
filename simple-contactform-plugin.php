@@ -11,7 +11,6 @@ Text Domain: simple-contactform-plugin
 
 $plugin_url = plugins_url() . "/simple-contactform-plugin";
 $options = array();
-$form_elements = array();
 
 // Create Plugin Admin Menu 
 function simple_contactform_plugin_menu() {
@@ -35,11 +34,7 @@ function simple_contactform_plugin_options_page() {
 		wp_die('You do not have sufficient permission to access this page');
 	}
 
-//	global $plugin_url;
-//	global $options;
-//    global $selected_form_fields;
-//    global $selected_form_recipient;
-//    global $selected_send_button_text;
+    global $options;
 	
 	//check if the form has been submitted
 	if ( isset($_POST['simple_contactform_form_submitted']) ) {
@@ -79,7 +74,7 @@ function simple_contactform_plugin_options_page() {
     $selected_send_button_text = get_option('simple_contactform_send_button_text');
     
 	//add Admin Menu Layout
-	require('templates/simple-contactform-backend-editor.php');
+	require('simple-contactform-editor.php');
 
 }
 
@@ -96,7 +91,7 @@ function simple_contactform_show_form($selected_form_fields, $selected_send_butt
         $required_symbol = $form_element[3] === 'required' ? '*' : '';
         $pattern_html_attr = $form_element[1] !== 'email' ? 'pattern="[a-zA-Z0-9 ]+"' : '';
         
-        echo '<div><label for="' . $form_element[2] . '">' . $form_element[0] . ' </label><br>';
+        echo '<div><div><label for="' . $form_element[2] . '">' . $form_element[0] . ' </label><br>';
             if ($form_element[1] !== 'textarea') {
                 echo '<input type="' . $form_element[1] . '" name="' . $form_element[2] . '" ' . $pattern_html_attr . '" class="' . $form_element_class . '" value="' . ( isset( $_POST[$form_element[2]] ) ? esc_attr( $_POST[$form_element[2]] ) : '' ) . '" ' . $required_input .  ' size="40" >' . $required_symbol;
             } else {
@@ -130,14 +125,16 @@ function simple_contactform_plugin_send_mail() {
         $subject = sanitize_text_field( $_POST["simple_custom_form_subject"] );
         $message = esc_textarea( $_POST["simple_custom_form_message"] );*/
         //Loop of selected form fields
-
-        // get the blog administrator's email address
-        $to = get_option( 'admin_email' );
-        
-        $headers = "From: $name <$email>" . "\r\n";
+        $headers = 'ouuu';
+        $subject = 'illu';
+        $message = 'ciao ciao bello!';
+        //$recipient = get_option('simple_contactform_selected_recipient');
+        $recipient = 'ramon.miklus@gmail.com';
+       
+        //$headers = "From: $name <$email>" . "\r\n";
 
         // If email has been process for sending, display a success message
-        if ( wp_mail( $to, $subject, $message, $headers ) ) {
+        if ( wp_mail( $recipient, $subject, $message, $headers) ) {
             echo '<div>';
             echo '<p>Thanks for contacting me, expect a response soon.</p>';
             // Make message dynamic
@@ -153,6 +150,7 @@ function simple_contactform_plugin_shortcode() {
     $selected_send_button_text = get_option('simple_contactform_send_button_text');
     
     ob_start();
+    simple_contactform_plugin_send_mail();
     simple_contactform_show_form($selected_form_fields, $selected_send_button_text, false);
     return ob_get_clean();
 }
