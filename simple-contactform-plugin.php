@@ -125,11 +125,11 @@ function simple_contactform_plugin_send_mail() {
         $subject = sanitize_text_field( $_POST["simple_custom_form_subject"] );
         $message = esc_textarea( $_POST["simple_custom_form_message"] );*/
         //Loop of selected form fields
-        $headers = 'ouuu';
-        $subject = 'illu';
-        $message = 'ciao ciao bello!';
+        $headers = '';
+        $subject = '';
+        $message = '';
         //$recipient = get_option('simple_contactform_selected_recipient');
-        $recipient = 'ramon.miklus@gmail.com';
+        $recipient = '';
        
         //$headers = "From: $name <$email>" . "\r\n";
 
